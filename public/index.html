@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://unpkg.com/jquery"></script>
+  <title>암호화 테스트 (AES / SHA256))</title>
+</head>
+
+<body>
+  <div id="header">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand mr-5" href="/">암호화 테스트</a>
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active mr-3">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="/signUp">Sign Up</a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div id="body" class="m-3">
+    <h2>암호화 테스트 (Node.js)</h2>
+    <p>안녕하세요? 암호화 테스트 입니다.</p>
+    <p>AES 방식과 SHA256 방식을 테스트 하려고 합니다.</p>
+    <p>기본값은 SHA256 입니다.</p>
+
+    <div id="encTypeWrap">
+      <button type="button" class="btn btn-primary m-1" onclick="setEncType('aes')">AES 암호화 테스트</button><br>
+      <button type="button" class="btn btn-primary m-1" onclick="setEncType('sha256')">SHA256 암호화 테스트</button>
+    </div>
+  </div>
+
+  <script>
+    function setEncType(encType) {
+      $.ajax({
+        url: '/encType',
+        method: 'put',
+        data: { encType },
+        success: (res) => {
+          console.log('setEncType - res : ', res)
+        },
+        error: (err) => {
+          console.log('setEncType - err : ', err)
+        }
+      })
+    }
+  </script>
+</body>
+</html>

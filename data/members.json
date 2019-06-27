@@ -1,0 +1,18 @@
+{
+  "users": [{
+    "id": "aaa",
+    "pw": "U2FsdGVkX1+Z+ZsmThuSWkrKLyGPkn8Vc3pTY7nOr6E=",
+    "salt": "learnershi35036",
+    "encType": "aes"
+  }, {
+    "id": "bbb",
+    "pw": "NNDfBtWK6+I8xERRTI/R6J+CBh3Cj3Tg4LUgITYsHn0=",
+    "salt": "learnershi",
+    "encType": "sha256"
+  }, {
+    "id": "ccc",
+    "pw": "i4sGQjTOd9p2lYKIjaNeDYgzlxOjJevwJJ+uUMhF1Vo=",
+    "salt": "learnershi",
+    "encType": "sha256"
+  }]
+}

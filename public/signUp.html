@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://unpkg.com/jquery"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/aes.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac-sha256.js"></script>
+  <title>암호화 테스트 - 회원가입</title>
+</head>
+
+<body>
+  <div id="header">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand mr-5" href="/">암호화 테스트</a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active mr-3">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="/signUp">Sign Up</a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div id="body" class="m-3">
+    <h3>회원가입 페이지</h3>
+    
+    <div id="loginWrap" style="width: 15%;">
+      <div class="form-group">
+        <label for="inputId">아이디 : </label><input class="form-control" id="inputId" name="id" type="text"/><br>
+        <label for="inputPw">비밀번호 : </label><input class="form-control" id="inputPw" name="pw" type="password"/><br>
+        <button type="button" class="btn btn-primary" onclick="signUp()">회원가입</button>
+        <button type="button" class="btn btn-danger" onclick="location.href='/'">취소</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let encType
+
+    onload = function() {
+      reqEncType()
+    }
+
+    function reqEncType() {
+      $.ajax({
+        url: '/encType',
+        method: 'get',
+        success: (res) => {
+          console.log('getEncType - res : ', res)
+          encType = res
+        },
+        error: (err) => {
+          console.log('getEncType - err : ', err)
+        }
+      })
+    }
+
+    function signUp() {
+      let id = document.querySelector('#inputId').value
+      let salt, hash, pw
+
+      // AES 방식 - 비암호화 => 서버에서 암호화 및 복호화
+      if(encType == 'aes') {
+        pw = document.querySelector('#inputPw').value
+
+      // SHA256 방식 - 클라이언트에서 암호화하여 전송
+      } else {
+        salt = "learnershi"
+        hash = CryptoJS.HmacSHA256(document.querySelector('#inputPw').value, salt)
+        pw = CryptoJS.enc.Base64.stringify(hash)
+      }
+
+      let data = {
+        id, pw, salt
+      }
+
+      $.ajax({
+        url: 'http://localhost:3006/signUp',
+        method: 'post',
+        data: data,
+        success: (res) => {
+          let isSignUpSuccess = res
+          
+          if(isSignUpSuccess) {
+            alert('회원 가입이 성공적으로 완료 되었습니다!')
+            location.href = '/'
+          } else {
+            alert('회원 가입에 실패하였습니다.')
+          }
+        },
+        error: (err) => {
+          console.log('signUp - err : ', err)
+        }
+      })
+    }
+  </script>
+  </body>
+</body>
+</html>
