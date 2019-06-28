@@ -6,7 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://unpkg.com/jquery"></script>
-  <title>암호화 테스트 (AES / SHA256))</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/aes.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac-sha256.js"></script>
+  <title>암호화 테스트 (AES / SHA256)</title>
 </head>
 
 <body>
@@ -31,7 +35,7 @@
   </div>
 
   <div id="body" class="m-3">
-    <h2>암호화 테스트 (Node.js)</h2>
+    <h2>암호화 테스트 (AES / SHA256)</h2>
     <p>안녕하세요? 암호화 테스트 입니다.</p>
     <p>AES 방식과 SHA256 방식을 테스트 하려고 합니다.</p>
     <p>기본값은 "암호화 사용 안함"입니다.</p>
@@ -40,6 +44,31 @@
       <button type="button" class="btn btn-primary m-1" onclick="setEncType('')">암호화 사용 안함</button><br>
       <button type="button" class="btn btn-primary m-1" onclick="setEncType('aes')">AES 암호화 테스트</button><br>
       <button type="button" class="btn btn-primary m-1" onclick="setEncType('sha256')">SHA256 암호화 테스트</button>
+    </div>
+
+    <div id="cryptoTestWrap" style="margin-top: 50px;">
+      <h3>암호화 테스트 해보기</h3>
+      
+      <label for="cryptoType">암호화 타입 : </label>
+      <select id="cryptoType">
+        <option value="">암호화 안함</option>
+        <option value="aes">AES 암호화</option>
+        <option value="sha256">SHA256 암호화</option>
+      </select><br>
+
+      <table>
+        <tr>
+          <td><label for="plainText">평문 : </label></td>
+          <td><input id="plainText" type="text"></td>
+        </tr>
+        <tr>
+          <td><label for="salt">Salt : </label></td>
+          <td><input id="salt" type="text"></td>
+        </tr>
+      </table>
+
+      암호화 문장 : <input id="encText" type="text" style="width: 500px;" readonly><br>
+      <button type="button" class="btn btn-primary m-1" onclick="encryptText()">암호화</button><br>
     </div>
   </div>
 
@@ -56,6 +85,30 @@
           console.log('setEncType - err : ', err)
         }
       })
+    }
+
+    function encryptText() {
+      let cryptoType = document.querySelector('#cryptoType').value
+      let plainText = document.querySelector('#plainText').value
+      let salt = document.querySelector('#salt').value
+      let encText
+      
+      // AES 방식 암호화
+      if(cryptoType == 'aes') {
+        encText = CryptoJS.AES.encrypt(plainText, salt).toString()
+
+      // SHA256 방식 암호화
+      } else if(cryptoType == 'sha256') {
+        hash = CryptoJS.HmacSHA256(plainText, salt)
+        encText = CryptoJS.enc.Base64.stringify(hash)
+      
+      // 암호화 사용 안함
+      } else {
+        encText = plainText
+      }
+
+      let encTextWrap = document.querySelector('#encText')
+      encTextWrap.value = encText
     }
   </script>
 </body>
