@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // 전역 변수 설정
-let encType = "aes"
+let encType = ""
 
 // Index 페이지
 app.get('/', (req, res) => {
@@ -49,6 +49,11 @@ app.post('/login', (req, res) => {
         serverPw = CryptoJS.AES.decrypt(member.pw, serverSalt).toString(CryptoJS.enc.Utf8)
         
       // SHA256 방식 - 클라이언트에서 암호화 되어, 암호화 된 상태로 비교
+      } else if(encType == 'sha256') {
+        serverId = member.id
+        serverPw = member.pw
+
+      // 암호화 사용 안할 경우
       } else {
         serverId = member.id
         serverPw = member.pw
@@ -77,13 +82,18 @@ app.post('/signUp', (req, res) => {
 
   // AES 방식 - 서버에서 암호화 처리 후 저장
   if(encType == 'aes') {
-    salt = "learnershi" + Math.round(Math.random() * 100000)
+    salt = 'learnershi' + Math.round(Math.random() * 100000)
     pw = CryptoJS.AES.encrypt(req.body.pw, salt).toString()
 
   // SHA256 방식 - 암호화된 상태로 전송 받음
-  } else {
+  } else if(encType == 'sha256') {
     pw = req.body.pw
     salt = req.body.salt
+  
+  // 암호화 사용 안할 경우
+  } else {
+    pw = req.body.pw
+    salt = ''
   }
   
   // 새로운 유저 Data
@@ -118,7 +128,7 @@ app.put('/encType', (req, res) => {
   let newEncType = req.body.encType
   
   let isSuccess = true
-  if(newEncType) {
+  if(newEncType !== 'undefined') {
     encType = newEncType
   } else {
     isSuccess = false

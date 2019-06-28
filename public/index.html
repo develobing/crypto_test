@@ -34,9 +34,10 @@
     <h2>암호화 테스트 (Node.js)</h2>
     <p>안녕하세요? 암호화 테스트 입니다.</p>
     <p>AES 방식과 SHA256 방식을 테스트 하려고 합니다.</p>
-    <p>기본값은 SHA256 입니다.</p>
+    <p>기본값은 "암호화 사용 안함"입니다.</p>
 
     <div id="encTypeWrap">
+      <button type="button" class="btn btn-primary m-1" onclick="setEncType('')">암호화 사용 안함</button><br>
       <button type="button" class="btn btn-primary m-1" onclick="setEncType('aes')">AES 암호화 테스트</button><br>
       <button type="button" class="btn btn-primary m-1" onclick="setEncType('sha256')">SHA256 암호화 테스트</button>
     </div>

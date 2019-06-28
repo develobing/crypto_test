@@ -11,8 +11,8 @@
     "encType": "sha256"
   }, {
     "id": "ccc",
-    "pw": "i4sGQjTOd9p2lYKIjaNeDYgzlxOjJevwJJ+uUMhF1Vo=",
-    "salt": "learnershi",
-    "encType": "sha256"
+    "pw": "ccc",
+    "salt": "",
+    "encType": ""
   }]
 }

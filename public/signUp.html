@@ -77,10 +77,14 @@
         pw = document.querySelector('#inputPw').value
 
       // SHA256 방식 - 클라이언트에서 암호화하여 전송
-      } else {
+      } else if(encType == 'sha256') {
         salt = "learnershi"
         hash = CryptoJS.HmacSHA256(document.querySelector('#inputPw').value, salt)
         pw = CryptoJS.enc.Base64.stringify(hash)
+      
+      // 암호화 사용 안할 경우
+      } else {
+        pw = document.querySelector('#inputPw').value
       }
 
       let data = {
